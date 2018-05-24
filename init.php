@@ -23,27 +23,6 @@ while (true) {
 	//Пробегаемся по каждому сообщению
 		foreach ($updates as $update) {
 	
-		/*
-		if (isset($update->message->location)) {
-		//Получаем погоду
-
-			switch ($result->weather[0]->main) {
-			case "Clear" :
-				$response = "На улице безоблачно. Погода отличная. Хорошего дня!";
-				break;
-			case "Clouds" :
-				$response = "На улице облачно, На всякий случай захватите зонтик. Удачи!";
-				break;
-			case "Rain" :
-				$response = "На улице дождь. Возьмите зонтик и теплое настроение! :)";
-				break;
-			default:
-				$response = "Мне не удается вычислить погоду, посмотрите в окно.";
-			}
-		*/
-
-		//Отвечаем на каждое сообщение
-			#$telegramApi->sendMessage($update->message->chat->id, $response);
 
 		 if (strpos($update->message->text, "Погода: ") !== false) {
            $city = str_replace("Погода: ", "", $update->message->text);
@@ -51,7 +30,7 @@ while (true) {
 		   $decoded = json_decode($json, true);
 		   $lat = $decoded['results'][0]['geometry']['location']['lat'];
 		   $lon = $decoded['results'][0]['geometry']['location']['lng'];
-           // тут используй мой код и получи в переменные $lat, $lon позицию и все будет работать
+           
 
            $result = $weatherApi->getWeather($lat, $lon);
            
@@ -85,12 +64,12 @@ while (true) {
        	$response = "Это произойдёт ".date('d.m.Y',time() + 60*60*24 * rand(0, (int) (10000)));; 
        	$telegramApi->sendMessage($update->message->chat->id, $response);
        } else if(strpos($update->message->text, "Помощь") !== false) {
-       	$response = "Вот что я могу: \n Погода: (город)  - показываю погоду \n Анекдот - шучу \n Когда я (стану богатым/умру/еще что-нибудь - предсказываю будущее"; 
+       	$response = "Вот что я могу: \n Погода: (город)  - показываю погоду \n Анекдот - шучу \n Когда я (стану богатым/перестану лениться/еще что-нибудь) - предсказываю будущее"; 
        	$telegramApi->sendMessage($update->message->chat->id, $response);
        }
         else {
            //Отвечаем на каждое сообщение
-           $telegramApi->sendMessage($update->message->chat->id, 'Неизвестная команда. Напиши Помощь');
+           $telegramApi->sendMessage($update->message->chat->id, 'Напишите "Помощь"');
            echo "invalid command \n";
        }
 
